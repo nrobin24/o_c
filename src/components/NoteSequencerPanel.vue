@@ -1,15 +1,15 @@
 <template>
-  <div class="gate-sequencer-panel">
-    <div class="gate-sequencer-panel-header">Gate Sequencer</div>
-    <div class="gate-sequencer-panel-body">
+  <div class="note-sequencer-panel">
+    <div class="note-sequencer-panel-header">Note Sequencer</div>
+    <div class="note-sequencer-panel-body">
       <div class="gate-button-row">
-        <OnOffSwitch
+        <NoteSpinner
           v-for="step in steps"
           :key="step.id"
-          v-bind:is-gate-on="step.gate"
           v-bind:step-id="step.id"
-          v-bind:switch-label="step.id.toString()"
-          v-on:toggle="toggleGate(step.id)"
+          v-bind:note-label="step.note"
+          v-on:note-up="noteUp(step.id)"
+          v-on:note-down="noteDown(step.id)"
         />
       </div>
       <div class="step-indicator-row">
@@ -26,22 +26,26 @@
 <script>
 import { mapState } from "vuex";
 
-import OnOffSwitch from "./OnOffSwitch";
+import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
 
 export default {
   name: "NoteSequencerPanel",
-  components: { OnOffSwitch, StepIndicatorLight },
+  components: { NoteSpinner, StepIndicatorLight },
   methods: {
-    toggleGate(stepId) {
-      this.$store.commit("gateSequencer/toggleGate", stepId);
+    noteUp(stepId) {
+      console.log("noteup method");
+      this.$store.commit("noteSequencer/noteUp", stepId);
+    },
+    noteDown(stepId) {
+      this.$store.commit("noteSequencer/noteDown", stepId);
     },
   },
   computed: {
     ...mapState({
       steps: (state) =>
-        state.gateSequencer.steps.map((step) => ({
-          isActive: step.id == state.gateSequencer.currentStep,
+        state.noteSequencer.steps.map((step) => ({
+          isActive: step.id == state.noteSequencer.currentStep,
           ...step,
         })),
     }),
@@ -50,19 +54,19 @@ export default {
 </script>
 
 <style scoped>
-.gate-sequencer-panel {
+.note-sequencer-panel {
   flex-direction: column;
   justify-content: center;
   padding: 20px;
 }
 
-.gate-sequencer-panel-body {
+.note-sequencer-panel-body {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
 }
 
-.gate-button-row {
+.note-button-row {
   justify-content: space-around;
 }
 .step-indicator-row {

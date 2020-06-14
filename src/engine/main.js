@@ -1,4 +1,5 @@
 import WebMidi from "webmidi"
+import { Note, Interval } from "@tonaljs/tonal";
 
 function getMidiOutputs() {
     return WebMidi.outputs
@@ -8,7 +9,6 @@ function enable(cb) {
     WebMidi.enable(cb);
 }
 
-
 function playNote(note, duration) {
     const noteOptions = {
         duration
@@ -16,28 +16,24 @@ function playNote(note, duration) {
     WebMidi.outputs[0].playNote(note, 'all', noteOptions)
 }
 
+function simpleTranspose(note, i) {
+    return Note.simplify(Note.transpose(note, Interval.fromSemitones(i)))
+}
 
-// const store = new Vuex.Store({
-//   state: {
-//     gates: [true, false, true, false],
-//     pitches: ['C3', 'C3', 'C3', 'C3']
-//   },
-//   mutations: {
-//       switchGate(state, switchId) {
-//         state.gates[switchId] = !state.gates[switchId]
-//     }
-//   }
+function noteUp(note) {
+    return simpleTranspose(note, 1)
+}
 
-// })
-
-// function switchGate(switchId) {
-//     store.commit("switchGate", switchId)
-// }
+function noteDown(note) {
+    return simpleTranspose(note, -1)
+}
 
 const engine = {
     getMidiOutputs,
     enable,
-    playNote
+    playNote,
+    noteUp,
+    noteDown
 }
 export {
     engine

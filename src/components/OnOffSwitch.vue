@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button v-bind:class="{ gateOn: isGateOn }" v-on:click="$emit(toggle)">
+    <button v-bind:class="{ gateOn: isGateOn }" v-on:click="$emit('toggle')">
       {{ label }}
     </button>
   </div>
