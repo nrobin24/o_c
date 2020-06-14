@@ -9,7 +9,11 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11"
+    "euclidean-rhythms": "^2.0.1",
+    "ramda": "^0.27.0",
+    "vue": "^2.6.11",
+    "vuex": "^3.4.0",
+    "webmidi": "^2.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",
