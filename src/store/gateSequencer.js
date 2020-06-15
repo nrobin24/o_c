@@ -14,32 +14,15 @@ const steps = [
 
 const state = () => ({
     steps,
-    patternLength: steps.length,
     currentStep: 1,
     isRunning: false
 })
-
-// getters
-// const getters = {
-//   steps (state) {
-//     return state.steps
-// }
-// }
-
-// // actions
-// const actions = {
-//   getAllProducts ({ commit }) {
-//     shop.getProducts(products => {
-//       commit('setProducts', products)
-//     })
-//   }
-// }
 
 const actions = {
   advancePattern ({ dispatch, state }) {
     if(state.isRunning) {
       // advance the step
-      if(state.currentStep === state.patternLength) {
+      if(state.currentStep === state.steps.length) {
         // commit('')
         state.currentStep = 1
       } else {
@@ -64,22 +47,6 @@ const mutations = {
   resetPattern (state) {
     state.currentStep = 1
   },
-  // advancePattern (state) {
-  //   if(state.isRunning) {
-  //     // advance the step
-  //     if(state.currentStep === state.patternLength) {
-  //       state.currentStep = 1
-  //     } else {
-  //       state.currentStep += 1
-  //     }
-
-  //     // play the new note
-  //     const step = state.steps[state.currentStep - 1]
-  //     if(step.gate) {
-  //       playNote(step.note, 500)
-  //     }
-  //   }
-  // },
   stop (state) {
     state.isRunning = false
   },
@@ -95,7 +62,9 @@ const mutations = {
       zip(steps, stepIds),
     )
 
-    state.patternLength = steps.length
+    if(state.currentStep > state.steps.length) {
+      state.currentStep = state.steps.length
+    }
   },
   addGate (state) {
     if(state.steps.length < 16) {
@@ -108,6 +77,9 @@ const mutations = {
   },
   removeGate (state) {
     if(state.steps.length > 1) {
+      if(state.currentStep === state.steps.length) {
+        state.currentStep = state.currentStep - 1
+      }
       state.steps = state.steps.slice(0, -1)
     }
 
