@@ -2,6 +2,14 @@
   <div class="note-sequencer-panel">
     <div class="note-sequencer-panel-header">Note Sequencer</div>
     <div class="note-sequencer-panel-body">
+      <div class="note-selectors">
+        <select>
+          <option>Scale</option>
+        </select>
+        <select>
+          <option>Key</option>
+        </select>
+      </div>
       <div class="gate-button-row">
         <NoteSpinner
           v-for="step in steps"
