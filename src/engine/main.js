@@ -1,5 +1,6 @@
 import WebMidi from "webmidi"
-import { Note, Interval } from "@tonaljs/tonal";
+import { Note, Interval, Scale } from "@tonaljs/tonal";
+import { times } from 'ramda';
 
 function getMidiOutputs() {
     return WebMidi.outputs
@@ -28,12 +29,22 @@ function noteDown(note) {
     return simpleTranspose(note, -1)
 }
 
+function generateNote() {
+    const notes = Scale.get("C major").notes
+    return notes[Math.floor(Math.random() * notes.length)] + "3"
+}
+
+function generateMelody(length) {
+    return times(generateNote, length)
+}
+
 const engine = {
     getMidiOutputs,
     enable,
     playNote,
     noteUp,
-    noteDown
+    noteDown,
+    generateMelody
 }
 export {
     engine

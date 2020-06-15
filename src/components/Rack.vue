@@ -3,6 +3,7 @@
     <TransportControls />
     <EuclideanGenerator v-on:replace-gates="replaceGatesEuclidean" />
     <GateSequencerPanel />
+    <TuringMachinePanel />
     <NoteSequencerPanel />
     <OutputPanel />
   </div>
@@ -14,6 +15,7 @@ import TransportControls from "./TransportControls";
 import EuclideanGenerator from "./EuclideanGenerator";
 import OutputPanel from "./OutputPanel";
 import NoteSequencerPanel from "./NoteSequencerPanel";
+import TuringMachinePanel from "./TuringMachinePanel";
 // import { mapGetters } from "vuex";
 
 export default {
@@ -22,6 +24,7 @@ export default {
     TransportControls,
     EuclideanGenerator,
     OutputPanel,
+    TuringMachinePanel,
     NoteSequencerPanel,
   },
   name: "Rack",

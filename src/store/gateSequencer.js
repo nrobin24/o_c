@@ -32,7 +32,7 @@ const actions = {
       // play the new note
       const step = state.steps[state.currentStep - 1]
       if(step.gate) {
-        dispatch('noteSequencer/advancePattern', null, {root: true})
+        dispatch('turingMachine/advancePattern', null, {root: true})
       }
     }
   }
@@ -55,10 +55,8 @@ const mutations = {
   },
   replaceGates (state, steps) {
     const stepIds = range(1,steps.length + 1)
-
     state.steps = map(
       x => ({id: x[1], gate: x[0]}),
-      // (x) => merge(x[0], {gate: x[1]}),
       zip(steps, stepIds),
     )
 

@@ -52,8 +52,8 @@ export default {
   computed: {
     ...mapState({
       steps: (state) =>
-        state.noteSequencer.steps.map((step) => ({
-          isActive: step.id == state.noteSequencer.currentStep,
+        state.turingMachine.steps.map((step) => ({
+          isActive: step.id == state.turingMachine.currentStep,
           ...step,
         })),
     }),

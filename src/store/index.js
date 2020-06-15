@@ -4,6 +4,7 @@ import gateSequencer from './gateSequencer'
 import noteSequencer from './noteSequencer'
 import output from './output'
 import euclideanGenerator from './euclideanGenerator'
+import turingMachine from './turingMachine'
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ export default new Vuex.Store({
     gateSequencer,
     output,
     euclideanGenerator,
-    noteSequencer
+    noteSequencer,
+    turingMachine
   }
 })
