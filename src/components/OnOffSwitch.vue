@@ -1,6 +1,10 @@
 <template>
   <div>
-    <button v-bind:class="{ gateOn: isGateOn }" v-on:click="$emit('toggle')">
+    <button
+      class="on-off-switch"
+      v-bind:class="{ gateOn: isGateOn }"
+      v-on:click="$emit('toggle')"
+    >
       {{ label }}
     </button>
   </div>
@@ -19,5 +23,9 @@ export default {
 <style>
 .gateOn {
   background-color: #f44336;
+}
+
+.on-off-switch {
+  width: 30px;
 }
 </style>

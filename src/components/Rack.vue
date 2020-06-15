@@ -1,7 +1,7 @@
 <template>
   <div class="rack">
     <TransportControls />
-    <EuclideanGenerator v-on:replace-gates="replaceGates" />
+    <EuclideanGenerator v-on:replace-gates="replaceGatesEuclidean" />
     <GateSequencerPanel />
     <NoteSequencerPanel />
     <OutputPanel />
@@ -26,7 +26,7 @@ export default {
   },
   name: "Rack",
   methods: {
-    replaceGates() {
+    replaceGatesEuclidean() {
       const steps = this.$store.getters["euclideanGenerator/steps"];
       this.$store.commit("gateSequencer/replaceGates", steps);
     },

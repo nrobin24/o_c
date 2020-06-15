@@ -1,4 +1,4 @@
-import {zip, map, merge} from 'ramda'
+import {zip, map, range, append} from 'ramda'
 // initial state
 
 const steps = [
@@ -87,8 +87,30 @@ const mutations = {
     state.isRunning = true
   },
   replaceGates (state, steps) {
-    const z = zip(state.steps, steps)
-    state.steps = map((x) => merge(x[0], {gate: x[1]}) , z)
+    const stepIds = range(1,steps.length + 1)
+
+    state.steps = map(
+      x => ({id: x[1], gate: x[0]}),
+      // (x) => merge(x[0], {gate: x[1]}),
+      zip(steps, stepIds),
+    )
+
+    state.patternLength = steps.length
+  },
+  addGate (state) {
+    if(state.steps.length < 16) {
+      state.steps = append(
+      {gate: false, id: state.steps.length + 1},
+      state.steps
+    )
+    }
+
+  },
+  removeGate (state) {
+    if(state.steps.length > 1) {
+      state.steps = state.steps.slice(0, -1)
+    }
+
   }
 }
 
