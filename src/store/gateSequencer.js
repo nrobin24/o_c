@@ -20,7 +20,7 @@ const state = () => ({
 
 const actions = {
   advancePattern ({ dispatch, state }) {
-    if(state.isRunning) {
+    // if(state.isRunning) {
       // advance the step
       if(state.currentStep === state.steps.length) {
         // commit('')
@@ -34,7 +34,7 @@ const actions = {
       if(step.gate) {
         dispatch('turingMachine/advancePattern', null, {root: true})
       }
-    }
+    // }
   }
 }
 

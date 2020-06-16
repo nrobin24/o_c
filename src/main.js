@@ -12,12 +12,12 @@ Vue.use(Vuex)
 
 function tick(store) {
   store.commit('output/updateAllMidiOutputs')
-  store.dispatch('gateSequencer/advancePattern')
+  // store.dispatch('gateSequencer/advancePattern')
 }
 
 function startTicking(store) {
   WebMidi.enable(function() {
-    setInterval(() => tick(store), 250)
+    setInterval(() => tick(store), 5000)
   })
 }
 

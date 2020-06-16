@@ -1,43 +1,67 @@
-// import { getMidiOutputs } from '../engine/main'
-// import { mapGetters } from 'vuex'
-// import { engine } from '../engine/main'
-
-// initial state
-
-// var timer;
-
 const state = () => ({
     count: 0,
-    bpm: 120,
-    isPlaying: false
+    bpm: 127,
+    isPlaying: false,
+    intervalId: ''
 })
 
-// // getters
-// const getters = mapGetters(['currentMidiOutput', 'allMidiOutputs'])
+function toIntervalLength(bpm) {
+    // TODO make this work
+    return 1000 / (bpm / (60 / 4))
+}
 
 const actions = {
-  playNote(context, {duration, note}) {
+    play({state, commit, dispatch}) {
+        if(!state.isPlaying) {
+            commit('setIsPlaying', true)
+            const intervalId = setInterval(dispatch, toIntervalLength(state.bpm), 'advance')
+            commit('setIntervalId', intervalId)
+        }
+    },
+    stop({commit, state}) {
+        if(state.isPlaying) {
+            commit('setIsPlaying', false)
+            clearInterval(state.intervalId)
+        }
 
-    console.log('got play note!')
-    console.log(note)
-    // TOOD: use context arg to get state
-    engine.playNote(note, duration)
-  }
+    },
+    advance({commit, dispatch}) {
+        dispatch('gateSequencer/advancePattern', null, {root: true})
+        commit('advanceCount')
+
+    },
+    plusBpm({state, commit, dispatch}) {
+        commit('setBpm', state.bpm + 1)
+        clearInterval(state.intervalId)
+        if(state.isPlaying){
+            commit('setIsPlaying', false)
+            dispatch('play')
+        }
+    },
+    minusBpm({state, commit, dispatch}) {
+        commit('setBpm', state.bpm - 1)
+        clearInterval(state.intervalId)
+        if(state.isPlaying){
+            commit('setIsPlaying', false)
+            dispatch('play')
+        }
+    },
 }
 
 // mutations
 const mutations = {
-    play (state) {
-        // timer = setInterval(tick(state))
-        state.isPlaying = true
+    setIsPlaying(state, isPlaying) {
+        state.isPlaying = isPlaying
     },
-    pause (state) {
-        state.isPlaying = false
+    advanceCount(state) {
+        state.count += 1
     },
-    stop (state) {
-        state.isPlaying = false
-        state.count = 0
-    }
+    setIntervalId(state, intervalId) {
+        state.intervalId = intervalId
+    },
+    setBpm(state, bpm) {
+        state.bpm = bpm
+    },
 }
 
 export default {

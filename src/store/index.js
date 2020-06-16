@@ -5,6 +5,7 @@ import noteSequencer from './noteSequencer'
 import output from './output'
 import euclideanGenerator from './euclideanGenerator'
 import turingMachine from './turingMachine'
+import clock from './clock'
 
 Vue.use(Vuex)
 
@@ -14,6 +15,7 @@ export default new Vuex.Store({
     output,
     euclideanGenerator,
     noteSequencer,
-    turingMachine
+    turingMachine,
+    clock
   }
 })

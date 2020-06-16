@@ -13,9 +13,6 @@ const getters = mapGetters(['currentMidiOutput', 'allMidiOutputs'])
 
 const actions = {
   playNote(context, {duration, note}) {
-
-    console.log('got play note!')
-    console.log(note)
     // TOOD: use context arg to get state
     engine.playNote(note, duration)
   }
