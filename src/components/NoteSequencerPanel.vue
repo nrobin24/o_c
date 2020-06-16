@@ -1,15 +1,6 @@
 <template>
-  <div class="note-sequencer-panel">
-    <div class="note-sequencer-panel-header">Note Sequencer</div>
-    <div class="note-sequencer-panel-body">
-      <div class="note-selectors">
-        <select>
-          <option>Scale</option>
-        </select>
-        <select>
-          <option>Key</option>
-        </select>
-      </div>
+  <BasePanel panel-label="Note Sequencer">
+    <template v-slot:body>
       <div class="gate-button-row">
         <NoteSpinner
           v-for="step in steps"
@@ -27,8 +18,8 @@
           v-bind:is-active="step.isActive"
         />
       </div>
-    </div>
-  </div>
+    </template>
+  </BasePanel>
 </template>
 
 <script>
@@ -36,10 +27,11 @@ import { mapState } from "vuex";
 
 import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
+import BasePanel from "./BasePanel";
 
 export default {
   name: "NoteSequencerPanel",
-  components: { NoteSpinner, StepIndicatorLight },
+  components: { NoteSpinner, StepIndicatorLight, BasePanel },
   methods: {
     noteUp(stepId) {
       console.log("noteup method");
@@ -62,18 +54,6 @@ export default {
 </script>
 
 <style scoped>
-.note-sequencer-panel {
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px;
-}
-
-.note-sequencer-panel-body {
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-}
-
 .note-button-row {
   justify-content: space-around;
 }

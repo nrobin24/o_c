@@ -1,27 +1,22 @@
 <template>
-  <div class="transport-controls">
-    <div class="transport-controls-header">Transport Controls</div>
-    <div class="transport-controls-body">
+  <BasePanel panel-label="Clock">
+    <template v-slot:body>
       <button class="transport-button" v-on:click="play">▶️</button>
       <button class="transport-button" v-on:click="stop">⏹</button>
-      <NumberSpinner
-        :value="bpm"
-        label="BPM"
-        v-on:plus="plusBpm"
-        v-on:minus="minusBpm"
-      />
-    </div>
-  </div>
+      <NumberSpinner :value="bpm" label="BPM" v-on:plus="plusBpm" v-on:minus="minusBpm" />
+    </template>
+  </BasePanel>
 </template>
 
 <script>
 // TODO: make the selector do something, use the v-model
 import NumberSpinner from "./NumberSpinner";
+import BasePanel from "./BasePanel";
 import { mapState } from "vuex";
 
 export default {
   name: "TransportControls",
-  components: { NumberSpinner },
+  components: { NumberSpinner, BasePanel },
   methods: {
     play() {
       this.$store.dispatch("clock/play");
@@ -34,34 +29,17 @@ export default {
     },
     minusBpm() {
       this.$store.dispatch("clock/minusBpm");
-    },
+    }
   },
   computed: {
     ...mapState({
-      bpm: (state) => state.clock.bpm,
-    }),
-  },
+      bpm: state => state.clock.bpm
+    })
+  }
 };
 </script>
 
 <style>
-.transport-controls {
-  background-color: grey;
-  height: 80px;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-  padding: 20px;
-}
-
-.transport-controls-header {
-  font-size: 18px;
-}
-
-.transport-controls-body {
-  justify-content: center;
-}
-
 .transport-button {
   height: 40px;
 }

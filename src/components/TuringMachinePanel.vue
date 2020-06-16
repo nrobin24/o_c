@@ -1,7 +1,6 @@
 <template>
-  <div class="turing-machine-panel">
-    <div class="turing-machine-panel-header">Turing Machine</div>
-    <div class="turing-machine-panel-body">
+  <BasePanel panel-label="Turing Machine">
+    <template v-slot:body>
       <div>
         <NumberSpinner
           :value="probInputValue"
@@ -19,16 +18,17 @@
       <button class="turing-machine-panel-button" v-on:click="generateMelody">
         Generate
       </button>
-    </div>
-  </div>
+    </template>
+  </BasePanel>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import NumberSpinner from "./NumberSpinner";
+import BasePanel from "./BasePanel";
 export default {
   name: "TuringMachinePanel",
-  components: { NumberSpinner },
+  components: { NumberSpinner, BasePanel },
   computed: {
     // steps() {
     //   return this.$getters.euclideanGenerator.steps;
@@ -59,24 +59,6 @@ export default {
 </script>
 
 <style>
-.turing-machine-panel {
-  background-color: grey;
-  height: 80px;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-  padding: 20px;
-}
-
-.turing-machine-panel-header {
-  font-size: 18px;
-}
-
-.turing-machine-panel-body {
-  justify-content: space-evenly;
-  align-items: center;
-}
-
 .turing-machine-panel-button {
   height: 40px;
 }

@@ -1,7 +1,6 @@
 <template>
-  <div class="gate-sequencer-panel">
-    <div class="gate-sequencer-panel-header">Gate Sequencer</div>
-    <div class="gate-sequencer-panel-body">
+  <BasePanel panel-label="Gate Sequencer">
+    <template v-slot:body>
       <div class="gate-step-container">
         <div class="gate-step-container-header">
           Steps
@@ -26,8 +25,8 @@
         <button v-on:click="addGate">+</button>
         <button v-on:click="removeGate">-</button>
       </div>
-    </div>
-  </div>
+    </template>
+  </BasePanel>
 </template>
 
 <script>
@@ -35,10 +34,11 @@ import { mapState } from "vuex";
 
 import OnOffSwitch from "./OnOffSwitch";
 import StepIndicatorLight from "./StepIndicatorLight";
+import BasePanel from "./BasePanel";
 
 export default {
   name: "GateSequencerPanel",
-  components: { OnOffSwitch, StepIndicatorLight },
+  components: { OnOffSwitch, StepIndicatorLight, BasePanel },
   methods: {
     toggleGate(stepId) {
       this.$store.commit("gateSequencer/toggleGate", stepId);
@@ -63,30 +63,6 @@ export default {
 </script>
 
 <style scoped>
-.gate-sequencer-panel {
-  background-color: grey;
-  flex-direction: column;
-  justify-content: center;
-  margin: 10px;
-  padding: 20px;
-}
-
-.gate-step-container-header {
-  padding: 5px;
-  justify-content: center;
-  font-weight: bold;
-  color: white;
-}
-.gate-sequencer-panel-header {
-  font-size: 18px;
-}
-
-.gate-sequencer-panel-body {
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 40px;
-}
-
 .step-indicator-row {
   justify-content: space-around;
 }

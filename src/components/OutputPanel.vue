@@ -1,7 +1,6 @@
 <template>
-  <div class="output-panel">
-    <div class="output-panel-header">Output</div>
-    <div class="output-panel-body">
+  <BasePanel panel-label="Output">
+    <template v-slot:body>
       <div class="output-selector">
         <div class="output-selector-label">
           Output Device
@@ -16,15 +15,17 @@
           </option>
         </select>
       </div>
-    </div>
-  </div>
+    </template>
+  </BasePanel>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import BasePanel from "./BasePanel";
 
 export default {
   name: "OutputPanel",
+  components: { BasePanel },
   computed: mapState({
     allMidiOutputs: (state) => state.output.allMidiOutputs,
   }),
@@ -32,23 +33,6 @@ export default {
 </script>
 
 <style>
-.output-panel {
-  background-color: grey;
-  height: 80px;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-  padding: 20px;
-}
-
-.output-panel-header {
-  font-size: 18px;
-}
-
-.output-panel-body {
-  justify-content: center;
-}
-
 .output-selector {
   padding: 10px;
   flex-direction: column;

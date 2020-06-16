@@ -20,6 +20,5 @@ export default {
 <style>
 .note-spinner {
   flex-direction: column;
-  height: 80px;
 }
 </style>

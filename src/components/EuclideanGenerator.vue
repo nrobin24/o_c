@@ -1,7 +1,6 @@
 <template>
-  <div class="euclidean-generator">
-    <div class="euclidean-generator-header">Euclidean Generator</div>
-    <div class="euclidean-generator-body">
+  <BasePanel panel-label="Euclidean Generator">
+    <template v-slot:body>
       <div>
         <NumberSpinner
           :value="stepsInputValue"
@@ -22,20 +21,18 @@
       >
         Generate
       </button>
-    </div>
-  </div>
+    </template>
+  </BasePanel>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import NumberSpinner from "./NumberSpinner";
+import BasePanel from "./BasePanel";
 export default {
   name: "EuclideanGenerator",
-  components: { NumberSpinner },
+  components: { NumberSpinner, BasePanel },
   computed: {
-    // steps() {
-    //   return this.$getters.euclideanGenerator.steps;
-    // },
     ...mapState({
       stepsInputValue: (state) => state.euclideanGenerator.stepsInputValue,
       lengthInputValue: (state) => state.euclideanGenerator.lengthInputValue,
@@ -59,24 +56,6 @@ export default {
 </script>
 
 <style>
-.euclidean-generator {
-  background-color: grey;
-  height: 80px;
-  justify-content: center;
-  flex-direction: column;
-  margin: 10px;
-  padding: 20px;
-}
-
-.euclidean-generator-header {
-  font-size: 18px;
-}
-
-.euclidean-generator-body {
-  justify-content: space-evenly;
-  align-items: center;
-}
-
 .euclidean-generator-button {
   height: 40px;
 }
