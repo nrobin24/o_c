@@ -1,26 +1,19 @@
 <template>
   <BasePanel panel-label="Euclidean Generator">
     <template v-slot:body>
-      <div>
-        <NumberSpinner
-          :value="stepsInputValue"
-          label="Steps"
-          v-on:plus="plusStepsInputValue"
-          v-on:minus="minusStepsInputValue"
-        />
-        <NumberSpinner
-          :value="lengthInputValue"
-          label="Length"
-          v-on:plus="plusLengthInputValue"
-          v-on:minus="minusLengthInputValue"
-        />
-      </div>
-      <button
-        class="euclidean-generator-button"
-        v-on:click="$emit('replace-gates')"
-      >
-        Generate
-      </button>
+      <NumberSpinner
+        :value="stepsInputValue"
+        label="Steps"
+        v-on:plus="plusStepsInputValue"
+        v-on:minus="minusStepsInputValue"
+      />
+      <NumberSpinner
+        :value="lengthInputValue"
+        label="Length"
+        v-on:plus="plusLengthInputValue"
+        v-on:minus="minusLengthInputValue"
+      />
+      <GenerateButton v-on:generate="replaceGates" />
     </template>
   </BasePanel>
 </template>
@@ -29,14 +22,16 @@
 import { mapState } from "vuex";
 import NumberSpinner from "./NumberSpinner";
 import BasePanel from "./BasePanel";
+import GenerateButton from "./GenerateButton";
+
 export default {
   name: "EuclideanGenerator",
-  components: { NumberSpinner, BasePanel },
+  components: { NumberSpinner, BasePanel, GenerateButton },
   computed: {
     ...mapState({
-      stepsInputValue: (state) => state.euclideanGenerator.stepsInputValue,
-      lengthInputValue: (state) => state.euclideanGenerator.lengthInputValue,
-    }),
+      stepsInputValue: state => state.euclideanGenerator.stepsInputValue,
+      lengthInputValue: state => state.euclideanGenerator.lengthInputValue
+    })
   },
   methods: {
     plusStepsInputValue() {
@@ -51,12 +46,10 @@ export default {
     minusLengthInputValue() {
       this.$store.commit("euclideanGenerator/minusInputValue");
     },
-  },
+    replaceGates() {
+      const steps = this.$store.getters["euclideanGenerator/steps"];
+      this.$store.commit("gateSequencer/replaceGates", steps);
+    }
+  }
 };
 </script>
-
-<style>
-.euclidean-generator-button {
-  height: 40px;
-}
-</style>

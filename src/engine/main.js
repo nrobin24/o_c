@@ -40,8 +40,6 @@ function toScaleAndOctaves(scaleName) {
 
 function getNoteFromNumber(noteNumber, rootOctave, scaleName) {
     const notes = toScaleAndOctaves(scaleName)
-    console.log('got notes')
-    console.log(notes)
     // note 0 is the first note in the rootOctave
     const noteZeroIndex = findIndex(propEq('octave', rootOctave))(notes)
     let noteIndex = noteZeroIndex + noteNumber
@@ -54,8 +52,6 @@ function getNoteFromNumber(noteNumber, rootOctave, scaleName) {
 
 function generateNote() {
     const notes = Scale.get("c pentatonic")
-    console.log('notes are')
-    console.log(notes)
     return notes[Math.floor(Math.random() * notes.length)] + "3"
 }
 

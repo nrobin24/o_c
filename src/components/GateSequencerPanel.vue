@@ -1,26 +1,24 @@
 <template>
   <BasePanel panel-label="Gate Sequencer">
     <template v-slot:body>
-      <div class="gate-step-container">
-        <div class="gate-step-container-header">
-          Steps
-        </div>
-        <div class="gate-step-container-body">
-          <div class="gate-step" v-for="step in steps" :key="step.id">
-            <OnOffSwitch
-              v-bind:is-gate-on="step.gate"
-              v-bind:step-id="step.id"
-              v-bind:label="step.id.toString()"
-              v-on:toggle="toggleGate(step.id)"
-            />
-            <StepIndicatorLight v-bind:is-active="step.isActive" />
+      <BaseControl control-label="Steps">
+        <template v-slot:body>
+          <div class="gate-step-container-body">
+            <div class="gate-step" v-for="step in steps" :key="step.id">
+              <OnOffSwitch
+                v-bind:is-gate-on="step.gate"
+                v-bind:step-id="step.id"
+                v-bind:label="step.id.toString()"
+                v-on:toggle="toggleGate(step.id)"
+              />
+              <StepIndicatorLight v-bind:is-active="step.isActive" />
+            </div>
           </div>
-        </div>
-      </div>
+        </template>
+      </BaseControl>
+
       <div class="gate-steps-add-remove">
-        <div class="gate-steps-add-remove-header">
-          Add/Remove
-        </div>
+        <div class="gate-steps-add-remove-header">Add/Remove</div>
         <div class="gate-steps-add-remove-body"></div>
         <button v-on:click="addGate">+</button>
         <button v-on:click="removeGate">-</button>
@@ -35,10 +33,11 @@ import { mapState } from "vuex";
 import OnOffSwitch from "./OnOffSwitch";
 import StepIndicatorLight from "./StepIndicatorLight";
 import BasePanel from "./BasePanel";
+import BaseControl from "./BaseControl";
 
 export default {
   name: "GateSequencerPanel",
-  components: { OnOffSwitch, StepIndicatorLight, BasePanel },
+  components: { OnOffSwitch, StepIndicatorLight, BasePanel, BaseControl },
   methods: {
     toggleGate(stepId) {
       this.$store.commit("gateSequencer/toggleGate", stepId);
@@ -48,17 +47,17 @@ export default {
     },
     removeGate() {
       this.$store.commit("gateSequencer/removeGate");
-    },
+    }
   },
   computed: {
     ...mapState({
-      steps: (state) =>
-        state.gateSequencer.steps.map((step) => ({
+      steps: state =>
+        state.gateSequencer.steps.map(step => ({
           isActive: step.id == state.gateSequencer.currentStep,
-          ...step,
-        })),
-    }),
-  },
+          ...step
+        }))
+    })
+  }
 };
 </script>
 

@@ -18,12 +18,13 @@ export default {
 
 <style>
 .control {
-  padding: 10px;
+  padding: 4px 10px 10px 10px;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .control-header {
-  padding: 5px;
+  padding-bottom: 4px;
   justify-content: center;
   font-weight: bold;
   color: white;

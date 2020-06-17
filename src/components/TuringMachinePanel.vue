@@ -15,7 +15,8 @@
           v-on:minus="minusLengthInputValue"
         />
       </div>
-      <button class="turing-machine-panel-button" v-on:click="generatePattern">Generate</button>
+      <!-- <button class="turing-machine-panel-button" v-on:click="generatePattern">Generate</button> -->
+      <GenerateButton v-on:generate="generatePattern" />
     </template>
   </BasePanel>
 </template>
@@ -24,9 +25,11 @@
 import { mapState } from "vuex";
 import NumberSpinner from "./NumberSpinner";
 import BasePanel from "./BasePanel";
+import GenerateButton from "./GenerateButton";
+
 export default {
   name: "TuringMachinePanel",
-  components: { NumberSpinner, BasePanel },
+  components: { NumberSpinner, BasePanel, GenerateButton },
   computed: {
     // steps() {
     //   return this.$getters.euclideanGenerator.steps;

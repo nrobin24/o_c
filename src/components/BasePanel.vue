@@ -36,9 +36,8 @@ export default {
 }
 
 .panel-body {
-  justify-content: center;
+  justify-content: flex-start;
   background-color: #878787;
-  align-items: flex-end;
-  padding: 12px;
+  padding-left: 24px;
 }
 </style>

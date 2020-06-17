@@ -1,8 +1,12 @@
 <template>
   <BasePanel panel-label="Clock">
     <template v-slot:body>
-      <button class="transport-button" v-on:click="play">▶️</button>
-      <button class="transport-button" v-on:click="stop">⏹</button>
+      <BaseControl control-label="Transport">
+        <template v-slot:body>
+          <button class="transport-button" v-on:click="play">▶️</button>
+          <button class="transport-button" v-on:click="stop">⏹</button>
+        </template>
+      </BaseControl>
       <NumberSpinner :value="bpm" label="BPM" v-on:plus="plusBpm" v-on:minus="minusBpm" />
     </template>
   </BasePanel>
@@ -12,11 +16,12 @@
 // TODO: make the selector do something, use the v-model
 import NumberSpinner from "./NumberSpinner";
 import BasePanel from "./BasePanel";
+import BaseControl from "./BaseControl";
 import { mapState } from "vuex";
 
 export default {
   name: "TransportControls",
-  components: { NumberSpinner, BasePanel },
+  components: { NumberSpinner, BasePanel, BaseControl },
   methods: {
     play() {
       this.$store.dispatch("clock/play");
@@ -42,5 +47,6 @@ export default {
 <style>
 .transport-button {
   height: 40px;
+  width: 50px;
 }
 </style>
