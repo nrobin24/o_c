@@ -24,9 +24,11 @@ export default {
 }
 
 .control-header {
-  padding-bottom: 4px;
+  /* padding-bottom: 4px; */
+  padding: 0px 0px 4px 0px;
   justify-content: center;
   font-weight: bold;
   color: white;
+  font-size: 16px;
 }
 </style>

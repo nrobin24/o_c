@@ -21,9 +21,10 @@ export default {
 .generate-button {
   border: 1px;
   background-color: white;
-  width: 76px;
+  width: 92px;
   padding: 8px;
   font-size: 16px;
   height: 38px;
+  width: 92px;
 }
 </style>

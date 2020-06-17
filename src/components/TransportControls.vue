@@ -47,6 +47,11 @@ export default {
 <style>
 .transport-button {
   height: 40px;
-  width: 50px;
+  width: 46px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
 }
 </style>
