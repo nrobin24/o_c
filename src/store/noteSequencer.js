@@ -1,10 +1,11 @@
 import { engine } from '../engine/main'
+import {map, mergeAll} from 'ramda'
 
 
 const steps = [
-  {id: 1, note: 'A4'},
-  {id: 2, note: 'A3'},
-  {id: 3, note: 'C3'},
+  {id: 1, noteVal: 0},
+  {id: 2, noteVal: 0},
+  {id: 3, noteVal: 0},
 ]
 
 const state = () => ({
@@ -12,8 +13,16 @@ const state = () => ({
     currentStep: 1
 })
 
+const getters = {
+  notes(state) {
+    const notes = map(s => mergeAll([s, engine.getNoteFromNumber(s.noteVal, 3, "C chromatic"), {isActive: s.id == state.currentStep}]), state.steps)
+    console.log('will return notes from getter')
+    console.log(notes)
+    return notes
+  }
+}
 const actions = {
-  advancePattern ({ dispatch, state }) {
+  advancePattern ({ dispatch, state, getters }) {
     if(state.currentStep === state.steps.length) {
       state.currentStep = 1
     } else {
@@ -21,30 +30,35 @@ const actions = {
     }
 
     // play the new note
-    const step = state.steps[state.currentStep - 1]
-    dispatch('output/playNote', {duration: 500, note: step.note}, {root: true})
+    const note = getters.notes[state.currentStep - 1]
+    dispatch('output/playNote', {duration: 500, note: note.noteName}, {root: true})
   }
 }
 
 // mutations
 const mutations = {
   noteUp (state, stepId) {
-    console.log('noteup mutation')
-    // TODO: use ramda to get actual stepId instead of relying on list index
-    state.steps[stepId - 1].note = engine.noteUp(state.steps[stepId - 1].note)
+    state.steps[stepId - 1].noteVal += 1
+
   },
   noteDown (state, stepId) {
-    // TODO: use ramda to get actual stepId instead of relying on list index
-    state.steps[stepId - 1].note = engine.noteDown(state.steps[stepId - 1].note)
+    state.steps[stepId - 1].note -= 1
   },
   resetPattern (state) {
     state.currentStep = 1
   },
+  replacePattern (state, steps) {
+    state.steps = steps
+    if(state.currentStep > state.steps.length) {
+      state.currentStep = state.steps.length
+    }
+  }
 }
 
 export default {
   namespaced: true,
   state,
   actions,
-  mutations
+  mutations,
+  getters
 }

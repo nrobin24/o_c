@@ -15,18 +15,27 @@ const state = () => ({
 })
 
 const actions = {
-  advancePattern ({ dispatch, state }) {
-    if(state.currentStep === state.steps.length) {
-      // commit('')
-      state.currentStep = 1
-    } else {
-      state.currentStep += 1
-    }
-
-    // play the new note
-    const step = state.steps[state.currentStep - 1]
-    dispatch('output/playNote', {duration: 500, note: step.note}, {root: true})
+  generatePattern ({commit, state}) {
+    const notes = engine.generateMelody(state.lengthInputValue)
+    const stepIds = range(1, state.lengthInputValue + 1)
+    const steps = map(
+      x => ({id: x[1], note: x[0]}),
+      zip(notes, stepIds),
+    )
+    commit('noteSequencer/replacePattern', steps, {root: true})
   }
+  // advancePattern ({ dispatch, state }) {
+  //   if(state.currentStep === state.steps.length) {
+  //     // commit('')
+  //     state.currentStep = 1
+  //   } else {
+  //     state.currentStep += 1
+  //   }
+
+  //   // play the new note
+  //   const step = state.steps[state.currentStep - 1]
+  //   dispatch('output/playNote', {duration: 500, note: step.note}, {root: true})
+  // }
 }
 
 // mutations
@@ -43,17 +52,17 @@ const mutations = {
     minusLengthInputValue (state) {
         state.lengthInputValue -= 1
     },
-    generateMelody (state) {
-      const notes = engine.generateMelody(state.lengthInputValue)
-      const stepIds = range(1, state.lengthInputValue + 1)
-      state.steps = map(
-        x => ({id: x[1], note: x[0]}),
-        zip(notes, stepIds),
-      )
-      if(state.currentStep > state.steps.length) {
-        state.currentStep = state.steps.length
-      }
-    }
+    // generateMelody (state) {
+    //   const notes = engine.generateMelody(state.lengthInputValue)
+    //   const stepIds = range(1, state.lengthInputValue + 1)
+    //   state.steps = map(
+    //     x => ({id: x[1], note: x[0]}),
+    //     zip(notes, stepIds),
+    //   )
+    //   if(state.currentStep > state.steps.length) {
+    //     state.currentStep = state.steps.length
+    //   }
+    // }
 }
 
 export default {

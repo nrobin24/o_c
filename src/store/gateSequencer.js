@@ -32,7 +32,7 @@ const actions = {
       // play the new note
       const step = state.steps[state.currentStep - 1]
       if(step.gate) {
-        dispatch('turingMachine/advancePattern', null, {root: true})
+        dispatch('noteSequencer/advancePattern', null, {root: true})
       }
     // }
   }

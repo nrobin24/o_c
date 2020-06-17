@@ -15,9 +15,7 @@
           v-on:minus="minusLengthInputValue"
         />
       </div>
-      <button class="turing-machine-panel-button" v-on:click="generateMelody">
-        Generate
-      </button>
+      <button class="turing-machine-panel-button" v-on:click="generatePattern">Generate</button>
     </template>
   </BasePanel>
 </template>
@@ -34,9 +32,9 @@ export default {
     //   return this.$getters.euclideanGenerator.steps;
     // },
     ...mapState({
-      probInputValue: (state) => state.turingMachine.probInputValue,
-      lengthInputValue: (state) => state.turingMachine.lengthInputValue,
-    }),
+      probInputValue: state => state.turingMachine.probInputValue,
+      lengthInputValue: state => state.turingMachine.lengthInputValue
+    })
   },
   methods: {
     plusProbInputValue() {
@@ -51,10 +49,10 @@ export default {
     minusLengthInputValue() {
       this.$store.commit("turingMachine/minusLengthInputValue");
     },
-    generateMelody() {
-      this.$store.commit("turingMachine/generateMelody");
-    },
-  },
+    generatePattern() {
+      this.$store.dispatch("turingMachine/generatePattern");
+    }
+  }
 };
 </script>
 

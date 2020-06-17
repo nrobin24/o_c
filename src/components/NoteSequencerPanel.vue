@@ -1,55 +1,55 @@
 <template>
   <BasePanel panel-label="Note Sequencer">
     <template v-slot:body>
-      <div class="gate-button-row">
-        <NoteSpinner
-          v-for="step in steps"
-          :key="step.id"
-          v-bind:step-id="step.id"
-          v-bind:note-label="step.note"
-          v-on:note-up="noteUp(step.id)"
-          v-on:note-down="noteDown(step.id)"
-        />
-      </div>
-      <div class="step-indicator-row">
-        <StepIndicatorLight
-          v-for="step in steps"
-          :key="step.id"
-          v-bind:is-active="step.isActive"
-        />
-      </div>
+      <BaseControl control-label="Steps">
+        <template v-slot:body>
+          <div class="note-step" v-for="step in notes" :key="step.id">
+            <NoteSpinner
+              :key="step.note"
+              v-bind:step-id="step.id"
+              v-bind:note-label="step.noteName"
+              v-on:note-up="noteUp(step.id)"
+              v-on:note-down="noteDown(step.id)"
+            />
+            <StepIndicatorLight v-bind:is-active="step.isActive" />
+          </div>
+        </template>
+      </BaseControl>
     </template>
   </BasePanel>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapGetters } from "vuex";
 
 import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
 import BasePanel from "./BasePanel";
+import BaseControl from "./BaseControl";
 
 export default {
   name: "NoteSequencerPanel",
-  components: { NoteSpinner, StepIndicatorLight, BasePanel },
+  components: { NoteSpinner, StepIndicatorLight, BasePanel, BaseControl },
   methods: {
     noteUp(stepId) {
-      console.log("noteup method");
       this.$store.commit("noteSequencer/noteUp", stepId);
     },
     noteDown(stepId) {
       this.$store.commit("noteSequencer/noteDown", stepId);
-    },
+    }
   },
   computed: {
-    ...mapState({
-      steps: (state) =>
-        state.turingMachine.steps.map((step) => ({
-          isActive: step.id == state.turingMachine.currentStep,
-          ...step,
-        })),
-    }),
-  },
+    ...mapGetters({
+      notes: "noteSequencer/notes"
+    })
+    // ...mapState({
+    //   steps: state =>
+    //     state.noteSequencer.steps.map(step => ({
+    //       isActive: step.id == state.noteSequencer.currentStep,
+    //       ...step
+    //     }))
+    // })
+  }
 };
 </script>
 
@@ -59,5 +59,17 @@ export default {
 }
 .step-indicator-row {
   justify-content: space-around;
+}
+
+.note-step {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: #5a5a5a;
+  padding: 2px;
+  margin: 1px;
 }
 </style>
