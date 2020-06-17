@@ -3,10 +3,10 @@
     <template v-slot:body>
       <div>
         <NumberSpinner
-          :value="probInputValue"
-          label="Probability"
-          v-on:plus="plusProbInputValue"
-          v-on:minus="minusProbInputValue"
+          :value="rangeInputValue"
+          label="Range"
+          v-on:plus="plusRangeInputValue"
+          v-on:minus="minusRangeInputValue"
         />
         <NumberSpinner
           :value="lengthInputValue"
@@ -14,9 +14,15 @@
           v-on:plus="plusLengthInputValue"
           v-on:minus="minusLengthInputValue"
         />
+        <NumberSpinner
+          :value="probInputValue"
+          label="Probability"
+          v-on:plus="plusProbInputValue"
+          v-on:minus="minusProbInputValue"
+        />
       </div>
       <!-- <button class="turing-machine-panel-button" v-on:click="generatePattern">Generate</button> -->
-      <GenerateButton v-on:generate="generatePattern" />
+      <GenerateButton v-on:generate="generateSteps" />
     </template>
   </BasePanel>
 </template>
@@ -35,11 +41,18 @@ export default {
     //   return this.$getters.euclideanGenerator.steps;
     // },
     ...mapState({
-      probInputValue: state => state.turingMachine.probInputValue,
-      lengthInputValue: state => state.turingMachine.lengthInputValue
+      rangeInputValue: state => state.turingMachine.rangeInputValue,
+      lengthInputValue: state => state.turingMachine.lengthInputValue,
+      probInputValue: state => state.turingMachine.probInputValue
     })
   },
   methods: {
+    plusRangeInputValue() {
+      this.$store.commit("turingMachine/plusRangeInputValue");
+    },
+    minusRangeInputValue() {
+      this.$store.commit("turingMachine/minusRangeInputValue");
+    },
     plusProbInputValue() {
       this.$store.commit("turingMachine/plusProbInputValue");
     },
@@ -52,8 +65,8 @@ export default {
     minusLengthInputValue() {
       this.$store.commit("turingMachine/minusLengthInputValue");
     },
-    generatePattern() {
-      this.$store.dispatch("turingMachine/generatePattern");
+    generateSteps() {
+      this.$store.dispatch("turingMachine/generateSteps");
     }
   }
 };

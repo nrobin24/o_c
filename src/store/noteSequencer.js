@@ -1,12 +1,7 @@
 import { engine } from '../engine/main'
-import {map, mergeAll} from 'ramda'
+import {map, mergeAll, range} from 'ramda'
 
-
-const steps = [
-  {id: 1, noteVal: 0},
-  {id: 2, noteVal: 0},
-  {id: 3, noteVal: 0},
-]
+const steps = map(id => ({id, noteVal: 0}), range(1, 9))
 
 const state = () => ({
     scaleNames: engine.getScaleNames(),
@@ -20,8 +15,6 @@ const state = () => ({
 const getNote = (noteVal, rootOctave, rootNote, scaleName) => {
   const scaleNameFormatted = rootNote + " " + scaleName
   const note = engine.getNoteFromNumber(noteVal, rootOctave, scaleNameFormatted)
-  console.log('got note')
-  console.log(note)
   return note
 }
 
@@ -45,19 +38,23 @@ const actions = {
       state.currentStep += 1
     }
 
+    // check if note should mutate from turing machine
+    // const shouldMutate = Math.random() < rootState.turingMachine.probInputValue
+    // if(shouldMutate) {
+    //   adjust(state.currentStep - 1, merge(_, {noteVal: }))
+    // }
+
     // play the new note
     const note = getters.notes[state.currentStep - 1]
     dispatch('output/playNote', {duration: 500, note: note.noteName}, {root: true})
   }
 }
 
-// mutations
 const mutations = {
   selectScale (state, scaleName) {
     state.scaleName = scaleName
   },
   rootNoteUp (state) {
-    console.log(engine.getScaleNames().sort())
     state.rootNote = engine.noteUp(state.rootNote)
   },
   rootNoteDown (state) {

@@ -1,32 +1,45 @@
-import { engine } from '../engine/main'
-import {map, range, zip} from 'ramda'
-
+import {map, range} from 'ramda'
 
 const state = () => ({
-    currentStep: 1,
-    probInputValue: 3,
-    lengthInputValue: 3,
+    rangeInputValue: 3,
+    lengthInputValue: 8,
+    probInputValue: 0
 })
 
+const generateNoteVal = range => {
+  return Math.floor(Math.random() * (range + 1));
+}
+
 const actions = {
-  generatePattern ({commit, state}) {
-    const notes = engine.generateMelody(state.lengthInputValue)
-    const stepIds = range(1, state.lengthInputValue + 1)
+  generateSteps ({commit, state}) {
     const steps = map(
-      x => ({id: x[1], note: x[0]}),
-      zip(notes, stepIds),
+      id => ({id, noteVal: generateNoteVal(state.rangeInputValue)}),
+      range(1, state.lengthInputValue + 1)
     )
     commit('noteSequencer/replacePattern', steps, {root: true})
+  },
+  generateStep () {
+
   }
 }
 
-// mutations
 const mutations = {
     plusProbInputValue (state) {
-        state.probInputValue += 1
+        if(state.probInputValue < 100) {
+          state.probInputValue += 10
+        }
+
     },
     minusProbInputValue (state) {
-        state.probInputValue -= 1
+      if(state.probInputValue > 0) {
+          state.probInputValue -= 10
+        }
+    },
+    plusRangeInputValue (state) {
+        state.rangeInputValue += 1
+    },
+    minusRangeInputValue (state) {
+        state.rangeInputValue -= 1
     },
      plusLengthInputValue (state) {
         state.lengthInputValue += 1

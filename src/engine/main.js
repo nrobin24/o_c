@@ -48,17 +48,10 @@ function toScaleAndOctaves(scaleName) {
 
 
 function getNoteFromNumber(noteNumber, rootOctave, scaleName) {
-    console.log('getNoteFromNumber called with')
-    console.log(noteNumber)
-    console.log(rootOctave)
-    console.log(scaleName)
     const notes = toScaleAndOctaves(scaleName)
-    console.log('got notes from scale')
-    console.log(notes)
     // note 0 is the first note in the rootOctave
     const noteZeroIndex = findIndex(propEq('octave', rootOctave))(notes)
     let noteIndex = noteZeroIndex + noteNumber
-    console.log(noteZeroIndex)
     if(noteIndex > notes.length - 1) {
         noteIndex = notes.length - 1
     }
