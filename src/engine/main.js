@@ -2,6 +2,15 @@ import WebMidi from "webmidi"
 import { Note, Interval, Scale } from "@tonaljs/tonal";
 import { times, range, map, findIndex, propEq, flatten } from 'ramda';
 
+
+function getAllScaleNames() {
+    return Scale.names()
+}
+
+function getScaleNames() {
+    return ['chromatic', 'major', 'dorian', 'aeolian', 'minor pentatonic']
+}
+
 function getMidiOutputs() {
     return WebMidi.outputs
 }
@@ -39,10 +48,17 @@ function toScaleAndOctaves(scaleName) {
 
 
 function getNoteFromNumber(noteNumber, rootOctave, scaleName) {
+    console.log('getNoteFromNumber called with')
+    console.log(noteNumber)
+    console.log(rootOctave)
+    console.log(scaleName)
     const notes = toScaleAndOctaves(scaleName)
+    console.log('got notes from scale')
+    console.log(notes)
     // note 0 is the first note in the rootOctave
     const noteZeroIndex = findIndex(propEq('octave', rootOctave))(notes)
     let noteIndex = noteZeroIndex + noteNumber
+    console.log(noteZeroIndex)
     if(noteIndex > notes.length - 1) {
         noteIndex = notes.length - 1
     }
@@ -66,7 +82,9 @@ const engine = {
     noteUp,
     noteDown,
     generateMelody,
-    getNoteFromNumber
+    getNoteFromNumber,
+    getScaleNames,
+    getAllScaleNames,
 }
 export {
     engine

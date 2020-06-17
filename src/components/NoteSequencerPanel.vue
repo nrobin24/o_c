@@ -3,16 +3,39 @@
     <template v-slot:body>
       <BaseControl control-label="Steps">
         <template v-slot:body>
-          <div class="note-step" v-for="step in notes" :key="step.id">
-            <NoteSpinner
-              :key="step.note"
-              v-bind:step-id="step.id"
-              v-bind:note-label="step.noteName"
-              v-on:note-up="noteUp(step.id)"
-              v-on:note-down="noteDown(step.id)"
-            />
-            <StepIndicatorLight v-bind:is-active="step.isActive" />
+          <div class="note-step-container">
+            <div class="note-step" v-for="step in notes" :key="step.id">
+              <NoteSpinner
+                :key="step.note"
+                v-bind:step-id="step.id"
+                v-bind:note-label="step.noteName"
+                v-on:note-up="noteUp(step.id)"
+                v-on:note-down="noteDown(step.id)"
+              />
+              <StepIndicatorLight v-bind:is-active="step.isActive" />
+            </div>
           </div>
+        </template>
+      </BaseControl>
+      <BaseControl control-label="Root" class="root-note-control">
+        <template v-slot:body>
+          <NoteSpinner
+            v-bind:note-label="rootNote"
+            v-on:note-up="rootNoteUp"
+            v-on:note-down="rootNoteDown"
+          />
+        </template>
+      </BaseControl>
+      <BaseControl control-label="Scale">
+        <template v-slot:body>
+          <select
+            name="scale-select"
+            id="scale-select"
+            v-on:change="selectScale($event.target.value)"
+            class="scale-select"
+          >
+            <option v-for="s in scaleNames" v-bind:value="s" :key="s">{{s}}</option>
+          </select>
         </template>
       </BaseControl>
     </template>
@@ -20,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
@@ -31,6 +54,15 @@ export default {
   name: "NoteSequencerPanel",
   components: { NoteSpinner, StepIndicatorLight, BasePanel, BaseControl },
   methods: {
+    selectScale(scaleName) {
+      this.$store.commit("noteSequencer/selectScale", scaleName);
+    },
+    rootNoteUp() {
+      this.$store.commit("noteSequencer/rootNoteUp");
+    },
+    rootNoteDown() {
+      this.$store.commit("noteSequencer/rootNoteDown");
+    },
     noteUp(stepId) {
       this.$store.commit("noteSequencer/noteUp", stepId);
     },
@@ -41,14 +73,11 @@ export default {
   computed: {
     ...mapGetters({
       notes: "noteSequencer/notes"
+    }),
+    ...mapState({
+      rootNote: state => state.noteSequencer.rootNote,
+      scaleNames: state => state.noteSequencer.scaleNames
     })
-    // ...mapState({
-    //   steps: state =>
-    //     state.noteSequencer.steps.map(step => ({
-    //       isActive: step.id == state.noteSequencer.currentStep,
-    //       ...step
-    //     }))
-    // })
   }
 };
 </script>
@@ -71,5 +100,21 @@ export default {
   border-color: #5a5a5a;
   padding: 2px;
   margin: 1px;
+}
+
+.root-note-control {
+  width: 92px;
+}
+
+.note-step-container {
+  width: 428px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: white;
+}
+
+.scale-select {
+  height: 36px;
+  font-size: 16px;
 }
 </style>

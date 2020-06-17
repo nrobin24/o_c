@@ -9,15 +9,31 @@ const steps = [
 ]
 
 const state = () => ({
+    scaleNames: engine.getScaleNames(),
     steps,
-    currentStep: 1
+    currentStep: 1,
+    scaleName: 'chromatic',
+    rootNote: 'C3'
 })
+
+
+const getNote = (noteVal, rootOctave, rootNote, scaleName) => {
+  const scaleNameFormatted = rootNote + " " + scaleName
+  const note = engine.getNoteFromNumber(noteVal, rootOctave, scaleNameFormatted)
+  console.log('got note')
+  console.log(note)
+  return note
+}
 
 const getters = {
   notes(state) {
-    const notes = map(s => mergeAll([s, engine.getNoteFromNumber(s.noteVal, 3, "C chromatic"), {isActive: s.id == state.currentStep}]), state.steps)
-    console.log('will return notes from getter')
-    console.log(notes)
+    const rootOctave = parseInt(state.rootNote.slice(-1))
+    const rootNote = state.rootNote.slice(0, -1)
+
+    const notes = map(s => mergeAll([
+      s, getNote(s.noteVal, rootOctave, rootNote, state.scaleName), {isActive: s.id == state.currentStep}
+    ]), state.steps)
+
     return notes
   }
 }
@@ -37,6 +53,16 @@ const actions = {
 
 // mutations
 const mutations = {
+  selectScale (state, scaleName) {
+    state.scaleName = scaleName
+  },
+  rootNoteUp (state) {
+    console.log(engine.getScaleNames().sort())
+    state.rootNote = engine.noteUp(state.rootNote)
+  },
+  rootNoteDown (state) {
+    state.rootNote = engine.noteDown(state.rootNote)
+  },
   noteUp (state, stepId) {
     state.steps[stepId - 1].noteVal += 1
 
