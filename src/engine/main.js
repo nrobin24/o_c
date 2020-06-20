@@ -19,11 +19,11 @@ function enable(cb) {
     WebMidi.enable(cb);
 }
 
-function playNote(note, duration) {
+function playNote(note, duration, channel) {
     const noteOptions = {
         duration
     }
-    WebMidi.outputs[0].playNote(note, 'all', noteOptions)
+    WebMidi.outputs[0].playNote(note, channel, noteOptions)
 }
 
 function simpleTranspose(note, i) {

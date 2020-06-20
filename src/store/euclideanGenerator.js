@@ -1,39 +1,57 @@
 import er from 'euclidean-rhythms';
-import {map} from 'ramda'
+import {map, mergeAll, range, pipe} from 'ramda'
 
-
-const state = () => ({
+const trackState = track => ({
+  [track]: {
     stepsInputValue: 3,
     lengthInputValue: 8,
+  }
 })
+
+const trackNums = range(1,5)
+
+const state = () => ({tracks: pipe(map(trackState), mergeAll)(trackNums)})
+
 
 // getters
 const getters = {
-  steps (state) {
-    // const x = state
-    // console.log('getter!')
-    // console.log(x)
-    // return [false, false, false, true, false, false, false, false]
+  steps: state => track => {
     return map(
       s => ({1: true, 0: false}[s]),
-      er.getPattern(state.stepsInputValue, state.lengthInputValue)
+      er.getPattern(state.tracks[track].stepsInputValue, state.tracks[track].lengthInputValue)
     )
-}
+  },
+  stepsInputValue: state => track => {
+    return state.tracks[track].stepsInputValue
+  },
+  lengthInputValue: state => track => {
+    return state.tracks[track].lengthInputValue
+  }
+  // steps (state) {
+  //   // const x = state
+  //   // console.log('getter!')
+  //   // console.log(x)
+  //   // return [false, false, false, true, false, false, false, false]
+  //   return map(
+  //     s => ({1: true, 0: false}[s]),
+  //     er.getPattern(state.stepsInputValue, state.lengthInputValue)
+  //   )
+  // }
 }
 
 // mutations
 const mutations = {
-    plusStepsInputValue (state) {
-        state.stepsInputValue += 1
+    plusStepsInputValue (state, track) {
+        state.tracks[track].stepsInputValue += 1
     },
-    minusStepsInputValue (state) {
-        state.stepsInputValue -= 1
+    minusStepsInputValue (state, track) {
+        state.tracks[track].stepsInputValue -= 1
     },
-     plusLengthInputValue (state) {
-        state.lengthInputValue += 1
+     plusLengthInputValue (state, track) {
+        state.tracks[track].lengthInputValue += 1
     },
-    minusInputValue (state) {
-        state.lengthInputValue -= 1
+    minusInputValue (state, track) {
+        state.tracks[track].lengthInputValue -= 1
     }
 }
 

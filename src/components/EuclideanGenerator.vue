@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import NumberSpinner from "./NumberSpinner";
 import BasePanel from "./BasePanel";
 import GenerateButton from "./GenerateButton";
@@ -27,28 +26,50 @@ import GenerateButton from "./GenerateButton";
 export default {
   name: "EuclideanGenerator",
   components: { NumberSpinner, BasePanel, GenerateButton },
+  props: {
+    activeTrack: Number
+  },
   computed: {
-    ...mapState({
-      stepsInputValue: state => state.euclideanGenerator.stepsInputValue,
-      lengthInputValue: state => state.euclideanGenerator.lengthInputValue
-    })
+    stepsInputValue() {
+      return this.$store.getters["euclideanGenerator/stepsInputValue"](
+        this.activeTrack
+      );
+    },
+    lengthInputValue() {
+      return this.$store.getters["euclideanGenerator/lengthInputValue"](
+        this.activeTrack
+      );
+    }
   },
   methods: {
     plusStepsInputValue() {
-      this.$store.commit("euclideanGenerator/plusStepsInputValue");
+      this.$store.commit(
+        "euclideanGenerator/plusStepsInputValue",
+        this.activeTrack
+      );
     },
     minusStepsInputValue() {
-      this.$store.commit("euclideanGenerator/minusStepsInputValue");
+      this.$store.commit(
+        "euclideanGenerator/minusStepsInputValue",
+        this.activeTrack
+      );
     },
     plusLengthInputValue() {
-      this.$store.commit("euclideanGenerator/plusLengthInputValue");
+      this.$store.commit(
+        "euclideanGenerator/plusLengthInputValue",
+        this.activeTrack
+      );
     },
     minusLengthInputValue() {
-      this.$store.commit("euclideanGenerator/minusInputValue");
+      this.$store.commit(
+        "euclideanGenerator/minusInputValue",
+        this.activeTrack
+      );
     },
     replaceGates() {
-      const steps = this.$store.getters["euclideanGenerator/steps"];
-      this.$store.commit("gateSequencer/replaceGates", steps);
+      const track = this.activeTrack;
+      const steps = this.$store.getters["euclideanGenerator/steps"](track);
+      this.$store.commit("gateSequencer/replaceGates", { steps, track });
     }
   }
 };

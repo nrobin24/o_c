@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "vuex";
 
 import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
@@ -53,6 +53,9 @@ import BaseControl from "./BaseControl";
 export default {
   name: "NoteSequencerPanel",
   components: { NoteSpinner, StepIndicatorLight, BasePanel, BaseControl },
+  props: {
+    activeTrack: Number
+  },
   methods: {
     selectScale(scaleName) {
       this.$store.commit("noteSequencer/selectScale", scaleName);
@@ -71,11 +74,13 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      notes: "noteSequencer/notes"
-    }),
+    rootNote() {
+      return this.$store.getters["noteSequencer/rootNote"](this.activeTrack);
+    },
+    notes() {
+      return this.$store.getters["noteSequencer/notes"](this.activeTrack);
+    },
     ...mapState({
-      rootNote: state => state.noteSequencer.rootNote,
       scaleNames: state => state.noteSequencer.scaleNames
     })
   }

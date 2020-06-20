@@ -1,20 +1,33 @@
-// import { getMidiOutputs } from '../engine/main'
-import { mapGetters } from 'vuex'
 import { engine } from '../engine/main'
+import {range, pipe, map, mergeAll} from 'ramda'
 
-// initial state
+const trackState = track => ({
+  [track]: {
+    midiOutput: -1,
+    channel: track
+  }
+})
+
+const trackNums = range(1,5)
+
+
 const state = () => ({
-  currentMidiOutput: -1,
+  tracks: pipe(map(trackState), mergeAll)(trackNums),
   allMidiOutputs: []
 })
 
-// // getters
-const getters = mapGetters(['currentMidiOutput', 'allMidiOutputs'])
+// const getters = mapGetters(['currentMidiOutput', 'allMidiOutputs'])
+
+const getters = {
+  channel: state => track => {
+    return state.tracks[track].channel
+  }
+}
 
 const actions = {
-  playNote(context, {duration, note}) {
+  playNote(context, {duration, note, track}) {
     // TOOD: use context arg to get state
-    engine.playNote(note, duration)
+    engine.playNote(note, duration, track.channel)
   }
 }
 
@@ -25,7 +38,13 @@ const mutations = {
     },
     updateCurrentMidiOutput (state, midiOutputId) {
         state.currentMidiOutput = midiOutputId
-    }
+    },
+    plusChannel (state, track) {
+      state.tracks[track].channel += 1
+    },
+    minusChannel (state, track) {
+      state.tracks[track].channel -= 1
+    },
 }
 
 export default {

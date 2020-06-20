@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import NumberSpinner from "./NumberSpinner";
 import BasePanel from "./BasePanel";
 import GenerateButton from "./GenerateButton";
@@ -36,37 +35,56 @@ import GenerateButton from "./GenerateButton";
 export default {
   name: "TuringMachinePanel",
   components: { NumberSpinner, BasePanel, GenerateButton },
+  props: {
+    activeTrack: Number
+  },
   computed: {
-    // steps() {
-    //   return this.$getters.euclideanGenerator.steps;
-    // },
-    ...mapState({
-      rangeInputValue: state => state.turingMachine.rangeInputValue,
-      lengthInputValue: state => state.turingMachine.lengthInputValue,
-      probInputValue: state => state.turingMachine.probInputValue
-    })
+    rangeInputValue() {
+      return this.$store.getters["turingMachine/rangeInputValue"](
+        this.activeTrack
+      );
+    },
+    lengthInputValue() {
+      return this.$store.getters["turingMachine/lengthInputValue"](
+        this.activeTrack
+      );
+    },
+    probInputValue() {
+      return this.$store.getters["turingMachine/probInputValue"](
+        this.activeTrack
+      );
+    }
   },
   methods: {
     plusRangeInputValue() {
-      this.$store.commit("turingMachine/plusRangeInputValue");
+      this.$store.commit("turingMachine/plusRangeInputValue", this.activeTrack);
     },
     minusRangeInputValue() {
-      this.$store.commit("turingMachine/minusRangeInputValue");
+      this.$store.commit(
+        "turingMachine/minusRangeInputValue",
+        this.activeTrack
+      );
     },
     plusProbInputValue() {
-      this.$store.commit("turingMachine/plusProbInputValue");
+      this.$store.commit("turingMachine/plusProbInputValue", this.activeTrack);
     },
     minusProbInputValue() {
-      this.$store.commit("turingMachine/minusProbInputValue");
+      this.$store.commit("turingMachine/minusProbInputValue", this.activeTrack);
     },
     plusLengthInputValue() {
-      this.$store.commit("turingMachine/plusLengthInputValue");
+      this.$store.commit(
+        "turingMachine/plusLengthInputValue",
+        this.activeTrack
+      );
     },
     minusLengthInputValue() {
-      this.$store.commit("turingMachine/minusLengthInputValue");
+      this.$store.commit(
+        "turingMachine/minusLengthInputValue",
+        this.activeTrack
+      );
     },
     generateSteps() {
-      this.$store.dispatch("turingMachine/generateSteps");
+      this.$store.dispatch("turingMachine/generateSteps", this.activeTrack);
     }
   }
 };

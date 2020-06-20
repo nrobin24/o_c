@@ -1,31 +1,34 @@
 <template>
   <div class="rack">
     <TransportControls />
-    <EuclideanGenerator />
+    <RackTabContainer />
+    <!-- <EuclideanGenerator />
     <GateSequencerPanel />
     <TuringMachinePanel />
     <NoteSequencerPanel />
-    <OutputPanel />
+    <OutputPanel />-->
   </div>
 </template>
 
 <script>
-import GateSequencerPanel from "./GateSequencerPanel";
+// import GateSequencerPanel from "./GateSequencerPanel";
 import TransportControls from "./TransportControls";
-import EuclideanGenerator from "./EuclideanGenerator";
-import OutputPanel from "./OutputPanel";
-import NoteSequencerPanel from "./NoteSequencerPanel";
-import TuringMachinePanel from "./TuringMachinePanel";
+// import EuclideanGenerator from "./EuclideanGenerator";
+// import OutputPanel from "./OutputPanel";
+// import NoteSequencerPanel from "./NoteSequencerPanel";
+// import TuringMachinePanel from "./TuringMachinePanel";
+import RackTabContainer from "./RackTabContainer";
 // import { mapGetters } from "vuex";
 
 export default {
   components: {
-    GateSequencerPanel,
-    TransportControls,
-    EuclideanGenerator,
-    OutputPanel,
-    TuringMachinePanel,
-    NoteSequencerPanel
+    RackTabContainer,
+    // GateSequencerPanel,
+    TransportControls
+    // EuclideanGenerator,
+    // OutputPanel,
+    // TuringMachinePanel,
+    // NoteSequencerPanel
   },
   name: "Rack"
 };

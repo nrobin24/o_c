@@ -12,6 +12,12 @@
           </select>
         </template>
       </BaseControl>
+      <NumberSpinner
+        :value="channel"
+        label="Channel"
+        v-on:plus="plusChannel"
+        v-on:minus="minusChannel"
+      />
     </template>
   </BasePanel>
 </template>
@@ -20,13 +26,30 @@
 import { mapState } from "vuex";
 import BasePanel from "./BasePanel";
 import BaseControl from "./BaseControl";
+import NumberSpinner from "./NumberSpinner";
 
 export default {
   name: "OutputPanel",
-  components: { BasePanel, BaseControl },
-  computed: mapState({
-    allMidiOutputs: state => state.output.allMidiOutputs
-  })
+  props: {
+    activeTrack: Number
+  },
+  components: { BasePanel, BaseControl, NumberSpinner },
+  computed: {
+    channel() {
+      return this.$store.getters["output/channel"](this.activeTrack);
+    },
+    ...mapState({
+      allMidiOutputs: state => state.output.allMidiOutputs
+    })
+  },
+  methods: {
+    plusChannel() {
+      this.$store.commit("output/plusChannel", this.activeTrack);
+    },
+    minusChannel() {
+      this.$store.commit("output/minusChannel", this.activeTrack);
+    }
+  }
 };
 </script>
 

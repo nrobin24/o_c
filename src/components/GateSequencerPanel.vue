@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
+import { map } from "ramda";
 
 import OnOffSwitch from "./OnOffSwitch";
 import StepIndicatorLight from "./StepIndicatorLight";
@@ -38,25 +39,43 @@ import BaseControl from "./BaseControl";
 export default {
   name: "GateSequencerPanel",
   components: { OnOffSwitch, StepIndicatorLight, BasePanel, BaseControl },
+  props: {
+    activeTrack: Number
+  },
   methods: {
     toggleGate(stepId) {
-      this.$store.commit("gateSequencer/toggleGate", stepId);
+      const track = this.activeTrack;
+      this.$store.commit("gateSequencer/toggleGate", { stepId, track });
     },
     addGate() {
-      this.$store.commit("gateSequencer/addGate");
+      const track = this.activeTrack;
+      this.$store.commit("gateSequencer/addGate", track);
     },
     removeGate() {
-      this.$store.commit("gateSequencer/removeGate");
+      const track = this.activeTrack;
+      this.$store.commit("gateSequencer/removeGate", track);
     }
   },
   computed: {
-    ...mapState({
-      steps: state =>
-        state.gateSequencer.steps.map(step => ({
-          isActive: step.id == state.gateSequencer.currentStep,
-          ...step
-        }))
-    })
+    steps() {
+      const steps = this.$store.getters["gateSequencer/steps"](
+        this.activeTrack
+      );
+      const currentStep = this.$store.getters["gateSequencer/currentStep"](
+        this.activeTrack
+      );
+      return map(
+        step => ({ isActive: step.id == currentStep, ...step }),
+        steps
+      );
+    }
+    // ...mapState({
+    //   steps: state =>
+    //     state.gateSequencer.steps.map(step => ({
+    //       isActive: step.id == state.gateSequencer.currentStep,
+    //       ...step
+    //     }))
+    // })
   }
 };
 </script>
