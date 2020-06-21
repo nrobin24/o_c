@@ -18,17 +18,19 @@ const actions = {
             commit('setIntervalId', intervalId)
         }
     },
-    stop({commit, state}) {
+    stop({commit, state, dispatch}) {
         if(state.isPlaying) {
             commit('setIsPlaying', false)
+            commit('resetCount')
+            dispatch('rackTabs/resetAllTracks', null, {root: true})
             clearInterval(state.intervalId)
         }
 
     },
     advance({commit, dispatch}) {
         dispatch('rackTabs/advanceAllTracks', null, {root: true})
+        // dispatch('noteSequencer/possiblyPlayNotes', null, {root: true})
         commit('advanceCount')
-
     },
     plusBpm({state, commit, dispatch}) {
         commit('setBpm', state.bpm + 1)
@@ -48,8 +50,15 @@ const actions = {
     },
 }
 
+const getters = {
+    count: state => state.count
+}
+
 // mutations
 const mutations = {
+    resetCount(state) {
+        state.count = 0
+    },
     setIsPlaying(state, isPlaying) {
         state.isPlaying = isPlaying
     },
@@ -67,7 +76,7 @@ const mutations = {
 export default {
   namespaced: true,
   state,
-//   getters,
+  getters,
   actions,
   mutations
 }

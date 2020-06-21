@@ -42,6 +42,7 @@ import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
 import BasePanel from "./BasePanel";
 import BaseControl from "./BaseControl";
+import { map } from "ramda";
 
 export default {
   name: "NoteSequencerPanel",
@@ -80,8 +81,20 @@ export default {
       return this.$store.getters["noteSequencer/rootNote"](this.activeTrack);
     },
     notes() {
-      return this.$store.getters["noteSequencer/notes"](this.activeTrack);
+      const notes = this.$store.getters["noteSequencer/notes"](
+        this.activeTrack
+      );
+      const currentStep = this.$store.getters["noteSequencer/currentStep"](
+        this.activeTrack
+      );
+      return map(
+        note => ({ isActive: note.id == currentStep, ...note }),
+        notes
+      );
     },
+    // notes() {
+    //   return this.$store.getters["noteSequencer/notes"](this.activeTrack);
+    // },
     scaleNames() {
       return this.$store.getters["noteSequencer/scaleNames"];
     },

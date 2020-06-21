@@ -1,14 +1,14 @@
 import { engine } from '../engine/main'
-import {map, mergeAll, range, pipe} from 'ramda'
+import {map, mergeAll, range, pipe, merge} from 'ramda'
 
 const steps = () => map(id => ({id, noteVal: 0}), range(1, 9))
 
 const trackState = track => ({
   [track]: {
     steps: steps(),
-    currentStep: 1,
     scaleName: 'chromatic',
-    rootNote: 'C3'
+    rootNote: 'C3',
+    count: 0
   }
 })
 
@@ -27,14 +27,21 @@ const getNote = (noteVal, rootOctave, rootNote, scaleName) => {
 }
 
 const getters = {
-  notes: state => track => {
+  steps: state => track => {
+    return state.tracks[track].steps
+  },
+  currentStep: state => track => {
+    const l = state.tracks[track].steps.length
+    const c = state.tracks[track].count
+    return (c % l) + 1
+  },
+  notes: (state, getters) => track => {
+    const steps = getters.steps(track)
     const rootOctave = parseInt(state.tracks[track].rootNote.slice(-1))
     const rootNote = state.tracks[track].rootNote.slice(0, -1)
-
-    const notes = map(s => mergeAll([
-      s, getNote(s.noteVal, rootOctave, rootNote, state.tracks[track].scaleName), {isActive: s.id == state.tracks[track].currentStep}
-    ]), state.tracks[track].steps)
-
+    const scaleName = state.tracks[track].scaleName
+    const toNote = ({noteVal}) => getNote(noteVal, rootOctave, rootNote, scaleName)
+    const notes =  map(s => merge(s, toNote(s)), steps)
     return notes
   },
   rootNote: state => track => {
@@ -46,20 +53,27 @@ const getters = {
   scaleNames: state => state.scaleNames
 }
 const actions = {
-  advancePattern ({ dispatch, state, getters }, track) {
-    if(state.tracks[track].currentStep === state.tracks[track].steps.length) {
-      state.tracks[track].currentStep = 1
-    } else {
-      state.tracks[track].currentStep += 1
-    }
+  playNote({commit, dispatch, getters}, trackNum) {
+    // play the note
+    const c = getters.currentStep(trackNum)
+    const note = getters.notes(trackNum)[c - 1]
+    dispatch('output/playNote', {duration: 50, note: note.noteName, trackNum}, {root: true})
 
-    // play the new note
-    const note = getters.notes(track)[state.tracks[track].currentStep - 1]
-    dispatch('output/playNote', {duration: 50, note: note.noteName, track}, {root: true})
+    // advance the count
+    commit("advance", trackNum)
+  },
+  reset({commit}, trackNum) {
+    commit("resetCount", trackNum)
   }
 }
 
 const mutations = {
+  advance(state, trackNum) {
+    state.tracks[trackNum].count += 1
+  },
+  resetCount(state, trackNum) {
+    state.tracks[trackNum].count = 0
+  },
   selectScale (state, {scaleName, track}) {
     state.tracks[track].scaleName = scaleName
   },

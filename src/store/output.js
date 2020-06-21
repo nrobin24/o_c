@@ -25,9 +25,9 @@ const getters = {
 }
 
 const actions = {
-  playNote({state}, {duration, note, track}) {
+  playNote({state}, {duration, note, trackNum}) {
     // TOOD: use context arg to get state
-    engine.playNote(note, duration, state.tracks[track].channel)
+    engine.playNote(note, duration, state.tracks[trackNum].channel)
   }
 }
 

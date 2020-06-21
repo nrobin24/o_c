@@ -12,7 +12,6 @@ Vue.use(Vuex)
 
 function tick(store) {
   store.commit('output/updateAllMidiOutputs')
-  // store.dispatch('gateSequencer/advancePattern')
 }
 
 function startTicking(store) {

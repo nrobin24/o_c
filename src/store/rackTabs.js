@@ -2,7 +2,6 @@ import {forEach} from 'ramda'
 
 const state = () => ({
     activeTrack: 1,
-    // tracks: [1, 2, 3, 4]
 })
 
 const mutations = {
@@ -14,9 +13,15 @@ const mutations = {
 const actions = {
   advanceAllTracks({dispatch, getters}) {
     const advanceTrack = trackNum => {
-      dispatch("gateSequencer/advancePattern", trackNum, {root: true})
+      dispatch("gateSequencer/possiblyPlayGate", trackNum, {root: true})
     }
     forEach(advanceTrack, getters.tracks)
+  },
+  resetAllTracks({dispatch, getters}) {
+    const resetTrack = trackNum => {
+      dispatch("noteSequencer/reset", trackNum, {root: true})
+    }
+    forEach(resetTrack, getters.tracks)
   }
 }
 
