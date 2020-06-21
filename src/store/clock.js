@@ -6,7 +6,6 @@ const state = () => ({
 })
 
 function toIntervalLength(bpm) {
-    // TODO make this work
     return 1000 / (bpm / (60 / 4))
 }
 
@@ -29,7 +28,6 @@ const actions = {
     },
     advance({commit, dispatch}) {
         dispatch('rackTabs/advanceAllTracks', null, {root: true})
-        // dispatch('noteSequencer/possiblyPlayNotes', null, {root: true})
         commit('advanceCount')
     },
     plusBpm({state, commit, dispatch}) {
