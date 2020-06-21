@@ -39,8 +39,10 @@ export default {
     OutputPanel
   },
   computed: {
+    tracks() {
+      return this.$store.getters["rackTabs/tracks"];
+    },
     ...mapState({
-      tracks: state => state.rackTabs.tracks,
       activeTrack: state => state.rackTabs.activeTrack
     })
   },

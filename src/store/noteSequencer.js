@@ -39,7 +39,11 @@ const getters = {
   },
   rootNote: state => track => {
     return state.tracks[track].rootNote
-  }
+  },
+  scaleName: state => track => {
+    return state.tracks[track].scaleName
+  },
+  scaleNames: state => state.scaleNames
 }
 const actions = {
   advancePattern ({ dispatch, state, getters }, track) {
@@ -49,15 +53,9 @@ const actions = {
       state.tracks[track].currentStep += 1
     }
 
-    // check if note should mutate from turing machine
-    // const shouldMutate = Math.random() < rootState.turingMachine.probInputValue
-    // if(shouldMutate) {
-    //   adjust(state.currentStep - 1, merge(_, {noteVal: }))
-    // }
-
     // play the new note
-    const note = getters.notes(track)[state.currentStep - 1]
-    dispatch('output/playNote', {duration: 500, note: note.noteName}, {root: true})
+    const note = getters.notes(track)[state.tracks[track].currentStep - 1]
+    dispatch('output/playNote', {duration: 50, note: note.noteName, track}, {root: true})
   }
 }
 
@@ -76,7 +74,7 @@ const mutations = {
 
   },
   noteDown (state, {stepId, track}) {
-    state.tracks[track].steps[stepId - 1].note -= 1
+    state.tracks[track].steps[stepId - 1].noteVal -= 1
   },
   resetPattern (state, track) {
     state.tracks[track].currentStep = 1

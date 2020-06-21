@@ -1,14 +1,14 @@
-import {zip, map, range, append, pipe, mergeAll, forEach} from 'ramda'
-// initial state
+import {zip, map, range, append, pipe, mergeAll} from 'ramda'
+
 const trackSteps = () => [
-  {id: 1, gate: true},
-  {id: 2, gate: true},
-  {id: 3, gate: true},
-  {id: 4, gate: true},
-  {id: 5, gate: true},
-  {id: 6, gate: true},
-  {id: 7, gate: true},
-  {id: 8, gate: true},
+  {id: 1, gate: false},
+  {id: 2, gate: false},
+  {id: 3, gate: false},
+  {id: 4, gate: false},
+  {id: 5, gate: false},
+  {id: 6, gate: false},
+  {id: 7, gate: false},
+  {id: 8, gate: false},
 ]
 
 const trackState = (track) => ({
@@ -26,36 +26,18 @@ const state = () => ({
 })
 
 const actions = {
-  advancePattern ({ dispatch, state }) {
-    const advanceTrackPattern = trackNum  => {
-      if(state.tracks[trackNum].currentStep === state.tracks[trackNum].steps.length) {
-        // commit('')
-        state.tracks[trackNum].currentStep = 1
-      } else {
-        state.tracks[trackNum].currentStep += 1
-      }
-
-      // play the new note
-      const step = state.tracks[trackNum].steps[state.tracks[trackNum].currentStep - 1]
-      if(step.gate) {
-        dispatch('noteSequencer/advancePattern', trackNum, {root: true})
-      }
+  advancePattern ({ dispatch, state, commit }, trackNum) {
+    if(state.tracks[trackNum].currentStep === state.tracks[trackNum].steps.length) {
+      commit('setCurrentStep', {trackNum, stepNum: 1})
+    } else {
+      commit('setCurrentStep', {trackNum, stepNum: state.tracks[trackNum].currentStep + 1})
     }
-    forEach(advanceTrackPattern, trackNums)
-    // // if(state.isRunning) {
-    //   // advance the step
-    //   if(state.tracks[track].currentStep === state.tracks[track].steps.length) {
-    //     // commit('')
-    //     state.tracks[track].currentStep = 1
-    //   } else {
-    //     state.tracks[track].currentStep += 1
-    //   }
 
-    //   // play the new note
-    //   const step = state.tracks[track].steps[state.tracks[track].currentStep - 1]
-    //   if(state.tracks[track].gate) {
-    //     dispatch('noteSequencer/advancePattern', null, {root: true})
-    //   }
+    // play the new note
+    const step = state.tracks[trackNum].steps[state.tracks[trackNum].currentStep - 1]
+    if(step.gate) {
+      dispatch('noteSequencer/advancePattern', trackNum, {root: true})
+    }
   }
 }
 
@@ -70,8 +52,10 @@ const getters = {
 
 // mutations
 const mutations = {
+  setCurrentStep(state, {trackNum, stepNum}) {
+    state.tracks[trackNum].currentStep = stepNum
+  },
   toggleGate (state, {stepId, track}) {
-    // TODO: use ramda to get actual stepId instead of relying on list index
     state.tracks[track].steps[stepId - 1].gate = !state.tracks[track].steps[stepId - 1].gate
   },
   resetPattern (state) {

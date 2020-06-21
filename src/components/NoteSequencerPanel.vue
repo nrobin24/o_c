@@ -28,12 +28,7 @@
       </BaseControl>
       <BaseControl control-label="Scale">
         <template v-slot:body>
-          <select
-            name="scale-select"
-            id="scale-select"
-            v-on:change="selectScale($event.target.value)"
-            class="scale-select"
-          >
+          <select v-model="selectedScaleName">
             <option v-for="s in scaleNames" v-bind:value="s" :key="s">{{s}}</option>
           </select>
         </template>
@@ -43,8 +38,6 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-
 import NoteSpinner from "./NoteSpinner";
 import StepIndicatorLight from "./StepIndicatorLight";
 import BasePanel from "./BasePanel";
@@ -58,19 +51,28 @@ export default {
   },
   methods: {
     selectScale(scaleName) {
-      this.$store.commit("noteSequencer/selectScale", scaleName);
+      this.$store.commit("noteSequencer/selectScale", {
+        scaleName,
+        track: this.activeTrack
+      });
     },
     rootNoteUp() {
-      this.$store.commit("noteSequencer/rootNoteUp");
+      this.$store.commit("noteSequencer/rootNoteUp", this.activeTrack);
     },
     rootNoteDown() {
-      this.$store.commit("noteSequencer/rootNoteDown");
+      this.$store.commit("noteSequencer/rootNoteDown", this.activeTrack);
     },
     noteUp(stepId) {
-      this.$store.commit("noteSequencer/noteUp", stepId);
+      this.$store.commit("noteSequencer/noteUp", {
+        stepId,
+        track: this.activeTrack
+      });
     },
     noteDown(stepId) {
-      this.$store.commit("noteSequencer/noteDown", stepId);
+      this.$store.commit("noteSequencer/noteDown", {
+        stepId,
+        track: this.activeTrack
+      });
     }
   },
   computed: {
@@ -80,9 +82,20 @@ export default {
     notes() {
       return this.$store.getters["noteSequencer/notes"](this.activeTrack);
     },
-    ...mapState({
-      scaleNames: state => state.noteSequencer.scaleNames
-    })
+    scaleNames() {
+      return this.$store.getters["noteSequencer/scaleNames"];
+    },
+    selectedScaleName: {
+      get() {
+        return this.$store.getters["noteSequencer/scaleName"](this.activeTrack);
+      },
+      set(scaleName) {
+        this.$store.commit("noteSequencer/selectScale", {
+          scaleName,
+          track: this.activeTrack
+        });
+      }
+    }
   }
 };
 </script>

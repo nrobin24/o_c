@@ -27,16 +27,6 @@ const getters = {
   lengthInputValue: state => track => {
     return state.tracks[track].lengthInputValue
   }
-  // steps (state) {
-  //   // const x = state
-  //   // console.log('getter!')
-  //   // console.log(x)
-  //   // return [false, false, false, true, false, false, false, false]
-  //   return map(
-  //     s => ({1: true, 0: false}[s]),
-  //     er.getPattern(state.stepsInputValue, state.lengthInputValue)
-  //   )
-  // }
 }
 
 // mutations

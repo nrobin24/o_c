@@ -26,7 +26,7 @@ const actions = {
 
     },
     advance({commit, dispatch}) {
-        dispatch('gateSequencer/advancePattern', null, {root: true})
+        dispatch('rackTabs/advanceAllTracks', null, {root: true})
         commit('advanceCount')
 
     },

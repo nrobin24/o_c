@@ -11,6 +11,10 @@ import rackTabs from './rackTabs'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  strict: true,
+  state: {
+    tracks: [1, 2, 3, 4]
+  },
   modules: {
     gateSequencer,
     output,
