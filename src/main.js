@@ -5,6 +5,10 @@ import WebMidi from "webmidi"
 
 import store from './store'
 
+import VueApexCharts from 'vue-apexcharts';
+
+Vue.component('apexchart', VueApexCharts)
+
 
 Vue.config.productionTip = false
 
